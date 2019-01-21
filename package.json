@@ -1,0 +1,45 @@
+{
+  "name": "graphql-starter",
+  "version": "1.0.0",
+  "description": "Change me",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "babel-node src/app.js",
+    "format": "prettier --write \"src/**/*.{js,gql}\""
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,gql}": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HydreIO/graphql-starter.git"
+  },
+  "author": "HydreIO",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/HydreIO/graphql-starter/issues"
+  },
+  "homepage": "https://github.com/HydreIO/graphql-starter#readme",
+  "dependencies": {
+    "apollo-server-koa": "^2.3.1",
+    "graphql": "^14.1.1",
+    "koa": "^2.6.2",
+    "merge-graphql-schemas": "^1.5.8"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.2.2",
+    "@babel/node": "^7.2.2",
+    "@babel/preset-env": "^7.2.3",
+    "husky": "^1.3.1",
+    "lint-staged": "^8.1.0",
+    "prettier": "^1.16.0"
+  }
+}

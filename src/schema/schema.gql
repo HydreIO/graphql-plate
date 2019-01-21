@@ -1,0 +1,8 @@
+type Query {
+  hello(name: String!): String!
+  me: User
+}
+
+type User {
+  sayHello(to: String!): String!
+}
