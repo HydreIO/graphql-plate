@@ -1,35 +1,37 @@
 import Koa from "koa"
-import { ApolloServer } from "apollo-server-koa"
+import { ApolloServer, ApolloError } from 'apollo-server-koa'
 import { fileLoader, mergeTypes } from "merge-graphql-schemas"
+import schema from './graphql'
 
-import { join } from "path"
-
-import resolvers from "./resolvers"
-
+const debug = require('debug')('gql')
 const { PORT = 3000, HOST = "localhost" } = process.env
 
-const typeDefs = mergeTypes(
-  fileLoader(join(__dirname, "schema"), { recursive: true }),
-  {
-    all: true
-  }
-)
+const formatError = error =>
+  ({ message: error.message, type: error.extensions.code }
+    |> (_ => (debug(pe.render({ ...error, stack: error.extensions ?.exception ?.stacktrace ?.join('\n') })), _)))
 
-const server = new ApolloServer({
-  typeDefs,
-  resolvers,
-  async context({ request, h }) {
-    return {
-      user: {
-        name: "HydreIO"
-      }
+const handleError = error => {
+  console.error(error)
+  const isApollo = error instanceof ApolloError
+  return {
+    body: JSON.stringify(isApollo ? { errors: [formatError(apolloError)], data: null } : 'Oops.. something went wrong!'),
+    statusCode: isApollo ? 200 : 503
+  }
+}
+
+const apollo = new ApolloServer({
+  schema, async context() {
+    user: {
+      name: 'foo'
     }
   }
 })
 
 const app = new Koa()
-server.applyMiddleware({ app })
 
-app.listen(PORT, HOST, () =>
-  console.log(`🚀  Server ready at http://${HOST}:${PORT}${server.graphqlPath}`)
-)
+void async function () {
+  try {
+    apollo.applyMiddleware({ app, path: '/gql', formatError, playground: false });
+    app.listen(PORT, HOST, () => debug(`🚀 Server ready on http://${HOST}:${PORT}${apollo.graphqlPath}`))
+  } catch (e) { handleError(e) }
+}()
