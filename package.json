@@ -4,8 +4,7 @@
   "description": "Change me",
   "main": "src/app.js",
   "scripts": {
-    "start": "babel-node src/app.js",
-    "format": "prettier --write \"src/**/*.{js,gql}\""
+    "dev": "node -r @babel/register -r dotenv/config src/app.js"
   },
   "husky": {
     "hooks": {
@@ -30,6 +29,7 @@
   "homepage": "https://github.com/HydreIO/graphql-starter#readme",
   "dependencies": {
     "apollo-server-koa": "^2.9.13",
+    "dotenv": "^8.2.0",
     "graphql": "^14.5.8",
     "koa": "^2.11.0",
     "merge-graphql-schemas": "^1.7.3"
