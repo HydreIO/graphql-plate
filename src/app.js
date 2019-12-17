@@ -21,8 +21,10 @@ const handleError = error => {
 
 const apollo = new ApolloServer({
   schema, async context() {
-    user: {
-      name: 'foo'
+    return {
+      user: {
+        name: 'foo'
+      }
     }
   }
 })
