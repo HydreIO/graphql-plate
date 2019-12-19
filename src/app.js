@@ -1,7 +1,6 @@
 import Koa from "koa"
-import { ApolloServer, ApolloError } from 'apollo-server-koa'
 import { fileLoader, mergeTypes } from "merge-graphql-schemas"
-import schema from './graphql'
+import { apollo } from './apollo'
 
 const debug = require('debug')('gql')
 const { PORT = 3000, HOST = "localhost" } = process.env
@@ -19,21 +18,15 @@ const handleError = error => {
   }
 }
 
-const apollo = new ApolloServer({
-  schema, async context() {
-    return {
-      user: {
-        name: 'foo'
-      }
-    }
-  }
-})
-
 const app = new Koa()
 
 void async function () {
   try {
+    const server = app.listen(PORT, HOST, () => debug(`
+🚀 Server ready on http://${HOST}:${PORT}${apollo.graphqlPath}
+🚀 Subscriptions ready on ws://${HOST}:${PORT}${apollo.graphqlPath}`))
+
     apollo.applyMiddleware({ app, path: '/gql', formatError, playground: false });
-    app.listen(PORT, HOST, () => debug(`🚀 Server ready on http://${HOST}:${PORT}${apollo.graphqlPath}`))
+    apollo.installSubscriptionHandlers(server);
   } catch (e) { handleError(e) }
 }()

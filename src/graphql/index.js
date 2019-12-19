@@ -1,11 +1,13 @@
 import { makeExecutableSchema } from 'apollo-server-koa'
 import resolvers from './resolvers'
-import * as schemaDirectives from './directives/'
-import typeDefs from './schema'
+import schemaDirectives from './directives'
+import { mergeTypes } from 'merge-graphql-schemas'
+
+import schema from './schema/schema.gql'
 
 const dir = __dirname
 export default makeExecutableSchema({
-	typeDefs,
+	typeDefs: mergeTypes([schema]),
 	resolvers,
 	schemaDirectives,
 	resolverValidationOptions: { requireResolversForResolveType: false }

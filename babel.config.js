@@ -26,6 +26,6 @@ module.exports = {
 		['@babel/plugin-proposal-do-expressions'],
 		['babel-plugin-implicit-function'],
 		['import-graphql'],
-		['wildcard', { noModifyCase: true }]
+		["import-directory"]
 	]
 }
