@@ -6,7 +6,8 @@ import debug from 'debug'
 
 const {
   PORT = 3000,
-  ORIGINS = '*'
+  ORIGINS = '*',
+  GRAPHQL_PATH = '/v1',
 } = process.env
 
 const log = debug('gql')
@@ -27,7 +28,7 @@ const corsOpt = {
 
 void async function() {
   const app = new Koa().use(cors(corsOpt)).use(loggerMiddleware)
-  const server = app.listen(PORT, () => log(`🚀 Now online! (:${PORT})`))
-  apollo.applyMiddleware({ app, path: '/' })
+  const server = app.listen(+PORT, () => log(`🚀 Now online! (0.0.0.0:${+PORT}${GRAPHQL_PATH})`))
+  apollo.applyMiddleware({ app, path: GRAPHQL_PATH })
   apollo.installSubscriptionHandlers(server)
 }()
