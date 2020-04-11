@@ -11,6 +11,8 @@ const {
 } = process.env
 
 const log = debug('gql')
+const logResponse = log.extend('->')
+
 const { fileLoader, mergeTypes } = mergeSchema
 const app = new Koa()
 
