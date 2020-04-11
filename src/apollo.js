@@ -23,5 +23,5 @@ export const apollo = new ApolloServer({
     }
   },
   formatError,
-  playground: false
+  playground: `${process.env.PLAYGROUND}`?.toLocaleLowerCase() === 'true'
 })
