@@ -6,7 +6,7 @@ import debug from 'debug'
 
 const {
   PORT = 3000,
-  ORIGINS = '*',
+  ORIGINS = '.*',
   GRAPHQL_PATH = '/v1',
 } = process.env
 
@@ -24,7 +24,10 @@ const loggerMiddleware = async (ctx, next) => {
 }
 
 const corsOpt = {
-  origin: ({ req: { headers: { origin } } }) => ORIGINS.split(';').reduce((a, b) => a || !!origin.match(b), '') && origin,
+  origin({ req: { headers: { origin } } }) {
+    if (ORIGINS.split(';').some(a => origin.match(a))) return origin
+    else return false
+  },
   credentials: true
 }
 
