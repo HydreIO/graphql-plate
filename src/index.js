@@ -26,7 +26,7 @@ const loggerMiddleware = async (ctx, next) => {
 const corsOpt = {
   origin({ req: { headers: { origin } } }) {
     if (ORIGINS.split(';').some(a => origin.match(a))) return origin
-    else return false
+    return false
   },
   credentials: true
 }
