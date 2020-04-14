@@ -1,6 +1,5 @@
 import Koa from "koa"
 import cors from '@koa/cors'
-import mergeSchema from "merge-graphql-schemas"
 import { apollo } from './apollo'
 import debug from 'debug'
 
@@ -12,9 +11,6 @@ const {
 
 const log = debug('gql')
 const logResponse = log.extend('->')
-
-const { fileLoader, mergeTypes } = mergeSchema
-const app = new Koa()
 
 const parsed = body => { try { return JSON.parse(body) } catch { return body } }
 const loggerMiddleware = async (ctx, next) => {
