@@ -25,6 +25,7 @@
     "graphql-tools": "^4.0.7",
     "koa": "^2.11.0",
     "merge-graphql-schemas": "^1.7.7",
+    "pretty-error": "^2.1.1",
     "supports-color": "^7.1.0"
   }
 }

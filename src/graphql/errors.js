@@ -1,6 +1,8 @@
 import apolloKoa from 'apollo-server-koa'
+import PrettyError from "pretty-error"
 
 const { ApolloError } = apolloKoa
+const prettyError = new PrettyError()
 
 const CODES = {
 	DISABLED: 'DISABLED'
