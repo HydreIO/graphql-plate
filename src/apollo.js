@@ -12,12 +12,21 @@ const logDate = log.extend('time')
 export const pubsub = new PubSub()
 export const apollo = new ApolloServer({
   schema,
-  context: ({ ctx }) => {
+  // The context function can be called for:
+  // a graphql http koa query with parameters:
+  //  { ctx } where ctx is a Koa Context
+  // a graphql websocket subcription with paramters:
+  //  { connection, payload }
+  context({ ctx, connection }) {
     logDate(new Date().toLocaleString())
-    const { query = '' } = ctx.request.body
-    ctx.introspection = !!query.includes('__schema')
-    if (!ctx.introspection) logIncommingQuery(query)
+    const { query = '' } = connection || ctx.request.body
+
+    const introspection = !!query.includes('__schema')
+
+    if (!introspection) logIncommingQuery(query)
     else logIncommingQuery('Introspection query (hidden)')
+
+    if (ctx) ctx.introspection = introspection
     return {
       pubsub
     }
