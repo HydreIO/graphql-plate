@@ -23,7 +23,7 @@
     "debug": "^4.1.1",
     "graphql": "^15.0.0",
     "graphql-tools": "^5.0.0",
-    "koa": "^2.11.0",
+    "koa": "^2.12.0",
     "pretty-error": "^2.1.1",
     "supports-color": "^7.1.0"
   }
